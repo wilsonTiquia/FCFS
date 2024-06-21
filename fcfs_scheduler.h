@@ -1,0 +1,33 @@
+#pragma once
+
+#include "process.h"
+#include <queue>
+#include <thread>
+#include <vector>
+#include <atomic>
+#include <mutex>
+#include <condition_variable>
+#include <list>
+
+class FCFS_Scheduler {
+private:
+    std::queue<Process*> process_queue;
+    std::vector<std::thread> cpu_threads;
+    std::atomic<bool> running;
+    std::mutex mtx;
+    std::condition_variable cv;
+    int num_cores;
+    std::list<Process*> running_processes;
+    std::list<Process*> finished_processes;
+
+    void cpu_worker(int core_id);
+
+public:
+    FCFS_Scheduler(int cores);
+    ~FCFS_Scheduler();
+
+    void add_process(Process* proc);
+    void start();
+    void stop();
+    void screen_ls();
+};
