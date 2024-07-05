@@ -30,4 +30,8 @@ public:
     void start();
     void stop();
     void screen_ls();
+    void print_running_processes();
+    void print_finished_processes();
+    void print_process_details(const std::string& process_name, int screen);
+    void print_process_queue_names();
 };

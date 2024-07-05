@@ -3,7 +3,8 @@
 #include <chrono>
 #include <ctime>
 #include <iomanip>
-#include <sstream> // Ensure this header is included
+#include <sstream> 
+#include <random>
 
 FCFS_Scheduler::FCFS_Scheduler(int cores) : num_cores(cores), running(true) {}
 
@@ -15,7 +16,7 @@ void FCFS_Scheduler::add_process(Process* proc) {
     std::lock_guard<std::mutex> lock(mtx);
     process_queue.push(proc);
     cv.notify_one();
-    std::cout << "Added process " << proc->name << " to the queue.\n";
+    //std::cout << "Added process " << proc->name << " to the queue.\n";
 }
 
 void FCFS_Scheduler::start() {
@@ -35,8 +36,12 @@ void FCFS_Scheduler::stop() {
     }
     std::cout << "Scheduler stopped.\n";
 }
-/**/
 void FCFS_Scheduler::cpu_worker(int core_id) {
+    // Set up the random number generator
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> exec_dist(1, 10); // Random number of commands to execute per iteration
+
     while (running) {
         Process* proc = nullptr;
 
@@ -49,90 +54,114 @@ void FCFS_Scheduler::cpu_worker(int core_id) {
             proc = process_queue.front();
             process_queue.pop();
             proc->core_id = core_id; // Assign core_id to the process
+            proc->start_time = std::chrono::system_clock::now();
             running_processes.push_back(proc);
         }
 
         while (proc->executed_commands < proc->total_commands) {
             {
-                std::lock_guard<std::mutex> lock(mtx);
                 auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
                 std::tm local_tm;
                 localtime_s(&local_tm, &now);
                 proc->log_file << "(" << std::put_time(&local_tm, "%m/%d/%Y %I:%M:%S%p") << ") Core:" << core_id << " \"Hello world from " << proc->name << "!\"\n";
+
+                std::lock_guard<std::mutex> lock(mtx);
+                proc->executed_commands += exec_dist(gen); // Random number of commands executed
+                if (proc->executed_commands > proc->total_commands) {
+                    proc->executed_commands = proc->total_commands; // Ensure we don't exceed total_commands
+                }
             }
 
-            proc->executed_commands++;
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            // Sleep for a DURATION CHANGE THIS IN THE CONFIG DELAYS-PER-EXEC
+            std::this_thread::sleep_for(std::chrono::milliseconds(250));
         }
 
-        {
+       {
             std::lock_guard<std::mutex> lock(mtx);
             running_processes.remove(proc);
             finished_processes.push_back(proc);
-        }
+     
+
+            
+       }
     }
 }
-void FCFS_Scheduler::screen_ls() {
+void FCFS_Scheduler::print_running_processes() {
     std::lock_guard<std::mutex> lock(mtx);
-    std::cout << "----------------\nRunning processes:\n";
+    std::cout << "Running processes:\n";
+    for (auto& proc : running_processes) {
+        std::cout << proc->name << " (" << proc->get_start_time() << ") Core: "
+            << (proc->core_id == -1 ? "N/A" : std::to_string(proc->core_id))
+            << " " << proc->executed_commands << " / " << proc->total_commands << "\n";
+    }
+    std::cout << "----------------\n";
+}
+void FCFS_Scheduler::print_finished_processes() {
+    std::lock_guard<std::mutex> lock(mtx);
+    std::cout << "Finished processes:\n";
+    for (auto& proc : finished_processes) {
+        std::cout << proc->name << " (" << proc->get_start_time() << ") Finished "
+            << proc->executed_commands << " / " << proc->total_commands << "\n";
+    }
+    std::cout << "----------------\n";
+}
+void FCFS_Scheduler::screen_ls() {
+    print_running_processes();
+    print_finished_processes();
+}
+void FCFS_Scheduler::print_process_details(const std::string& process_name, int screen) {
+    std::lock_guard<std::mutex> lock(mtx);
+    
 
-    // Print all running processes
-    bool running_found = false;
-    for (int i = 1; i <= 10; ++i) {
-        bool found = false;
-
-        // Check if the process is running
-        for (auto& proc : running_processes) {
-            if (proc->name == "process" + std::to_string(i)) {
-                std::cout << proc->name << " (" << proc->get_start_time() << ") Core: " << (proc->core_id == -1 ? "N/A" : std::to_string(proc->core_id)) << " " << proc->executed_commands << " / " << proc->total_commands << "\n";
-                found = true;
-                running_found = true;
-                break;
-            }
-        }
-
-        // Check if the process is finished
-        if (!found) {
-            for (auto& proc : finished_processes) {
-                if (proc->name == "process" + std::to_string(i)) {
-                    std::cout << proc->name << " (" << proc->get_start_time() << ") Finished " << proc->total_commands << " / " << proc->total_commands << "\n";
-                    found = true;
-                    break;
-                }
-            }
-        }
-
-        // If neither running nor finished, assume not started
-        if (!found) {
-            std::cout << "process" + std::to_string(i) << " (N/A) N/A\n";
+    // Check process_queue
+    std::queue<Process*> temp_queue = process_queue;
+    while (!temp_queue.empty()) {
+        Process* proc = temp_queue.front();
+        temp_queue.pop();
+        if (proc->name == process_name) {
+            proc->displayProcessInfo();
+            return;
         }
     }
 
-    // If no running processes were found, print a message
-    if (!running_found) {
-        std::cout << "No running processes.\n";
-    }
-
-    std::cout << "\nFinished processes:\n";
-
-    // Print all finished processes
-    bool finished_found = false;
-    for (int i = 1; i <= 10; ++i) {
-        bool found = false;
-        for (auto& proc : finished_processes) {
-            if (proc->name == "process" + std::to_string(i)) {
-                std::cout << proc->name << " (" << proc->get_start_time() << ") Finished " << proc->total_commands << " / " << proc->total_commands << "\n";
-                found = true;
-                finished_found = true;
-                break;
-            }
+    // Check running_processes
+    for (auto& proc : running_processes) {
+        if (proc->name == process_name && screen == 0) {
+            system("cls");
+            proc->displayProcessInfo();
+            return;
         }
-        
+        else if (proc->name == process_name && screen == 1) {
+            proc->displayProcessInfo();
+            return;
+        }
     }
 
-    if (!finished_found) {
-        std::cout << "No finished processes.\n";
+    // Check finished_processes
+    for (auto& proc : finished_processes) {
+        if (proc->name == process_name && screen == 1) {
+            proc->displayProcessInfo();
+            std::cout << "Process " << process_name << " has finished and cannot be accessed after exiting this screen.\n";
+            return;
+        }
+        else if(proc->name == process_name && screen == 0) {
+            std::cout << "Process " << process_name << " not found.\n";
+            return;
+        }
     }
 
+    // If process not found in any list
+    std::cout << "Process " << process_name << " not found.\n";
+
+}
+
+void FCFS_Scheduler::print_process_queue_names() {
+    std::lock_guard<std::mutex> lock(mtx);
+    std::cout << "Processes in the queue:\n";
+    std::queue<Process*> temp_queue = process_queue;
+    while (!temp_queue.empty()) {
+        std::cout << temp_queue.front()->name << "\n";
+        temp_queue.pop();
+    }
     std::cout << "----------------\n";
 }
