@@ -8,20 +8,27 @@
 #include "process.h"
 #include <list>
 
-class FCFS_Scheduler {
+// Custom comparator for priority queue to sort processes by remaining commands
+struct CompareProcess {
+    bool operator()(Process* const& p1, Process* const& p2) {
+        return p1->total_commands > p2->total_commands;
+    }
+};
+
+class SJF_Scheduler {
 private:
     int num_cores;
     bool running;
     std::vector<std::thread> cpu_threads;
-    std::queue<Process*> process_queue;
+    std::priority_queue<Process*, std::vector<Process*>, CompareProcess> process_queue;
     std::list<Process*> running_processes;
     std::vector<Process*> finished_processes;
     std::mutex mtx;
     std::condition_variable cv;
 
 public:
-    FCFS_Scheduler(int cores);
-    ~FCFS_Scheduler();
+    SJF_Scheduler(int cores);
+    ~SJF_Scheduler();
 
     void add_process(Process* proc);
     void start();

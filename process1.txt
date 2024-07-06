@@ -4971,3 +4971,44 @@ Process name: process1
 Logs:
 Process name: process1
 Logs:
+Process name: process1
+Logs:
+Process name: process1
+Logs:
+(07/06/2024 07:18:53PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:53PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:53PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:53PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:54PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:54PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:54PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:55PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:55PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:55PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:55PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:56PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:56PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:56PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:56PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:57PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:57PM) Core:1 "Hello world from process1!"
+(07/06/2024 07:18:57PM) Core:1 "Hello world from process1!"
+Process name: process1
+Logs:
+(07/06/2024 07:19:12PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:12PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:13PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:13PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:13PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:14PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:14PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:14PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:14PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:15PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:15PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:15PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:15PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:16PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:16PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:16PM) Core:0 "Hello world from process1!"
+(07/06/2024 07:19:16PM) Core:0 "Hello world from process1!"

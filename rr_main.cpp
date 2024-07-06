@@ -2,6 +2,8 @@
 #include "rr_scheduler.h"
 #include "process.h"
 #include <random>
+
+/*
 int main() {
 
     std::random_device rd;
@@ -94,3 +96,4 @@ int main() {
         return 0;
     
 }
+*/

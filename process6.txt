@@ -2198,3 +2198,5 @@ Process name: process6
 Logs:
 Process name: process6
 Logs:
+Process name: process6
+Logs:
