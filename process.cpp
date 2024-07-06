@@ -38,7 +38,7 @@ std::string Process::get_status() const {
 void Process::displayProcessInfo() const {
     //print the process information
     
-    std::cout << "Process name: " << name << "\n";
+    std::cout << "\nProcess name: " << name << "\n";
     std::cout << "Process ID: " << process_id << "\n\n";
 
     if (executed_commands < total_commands) {

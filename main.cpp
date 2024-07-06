@@ -5,11 +5,11 @@
 #include <string>
 #include <random>
 #include <sstream>
-
+/*
 int main() {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(1000, 2000);
+    std::uniform_int_distribution<> dist(10, 20);
 
     const int num_cores = 4;
     FCFS_Scheduler scheduler(num_cores);
@@ -94,3 +94,4 @@ int main() {
 
     return 0;
 }
+*/

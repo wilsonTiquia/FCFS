@@ -21,6 +21,9 @@
     <ClInclude Include="fcfs_scheduler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="rr_scheduler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="process.cpp">
@@ -30,6 +33,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rr_scheduler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rr_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

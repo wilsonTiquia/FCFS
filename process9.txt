@@ -1550,4 +1550,43 @@ Logs:
 (07/06/2024 05:58:03AM) Core:0 "Hello world from process9!"
 (07/06/2024 05:58:04AM) Core:0 "Hello world from process9!"
 (07/06/2024 05:58:04AM) Core:0 "Hello world from process9!"
-(07
+(07Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
+Process name: process9
+Logs:
